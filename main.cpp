@@ -12,23 +12,6 @@ using bvec = vector<bool>;
 
 decltype(std::chrono::high_resolution_clock::now()) saved_time;
 
-struct Info{
-    unsigned score, curr_score;
-};
-
-Info info;
-
-void showInfo(float deltatime){
-    auto current_time = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(current_time - saved_time);
-	double dt = 1e-6 * static_cast<double>(duration.count());
-
-    if(dt >= deltatime){
-        saved_time = current_time;
-        cout<<"Score: "<<info.score<<'\t'<<"Current score: "<<info.curr_score<<'\n';
-    }
-}
-
 void load(const char* filepath, unsigned& max_slices, unsigned& n_types, uvec& n_pizzas){
     ifstream file(filepath);
     if(!file){
@@ -60,11 +43,9 @@ bool add_one(bvec& num);
 bool push_one(bvec& num, int i=-1);
 int pop_one(bvec& num);
 int find_last_one(const bvec& num, unsigned level=0);
-// bool is_max(const bvec& num);
 unsigned tell_score(const uvec& n_pizzas, const bvec& num);
 
 int last_index = -1;
-// unsigned curr_score = 0;
 
 struct Input{
     unsigned max_slices, n_types;
@@ -76,7 +57,6 @@ struct Output{
     uvec order;
 };
 
-// void algo1(const Input& input, Output& output);
 void algo2(const Input& input, Output& output);
 
 int main(int argc, char** argv){
@@ -100,7 +80,8 @@ int main(int argc, char** argv){
     // Output
     cout<<"OMS: "<<output.score<<'\n';
 
-    save(argv[2], output.order);
+    if(argc > 2)
+        save(argv[2], output.order);
     // ---------------------------------
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-time_beg);
     double dt = 1e-6 * static_cast<double>(duration.count());
@@ -109,26 +90,6 @@ int main(int argc, char** argv){
 
     return 0;
 }
-
-// bool add_one(bvec& num){
-//     // int i = find_last_one(num);
-//     int i = last_index;
-//     if(i < 0){
-//         cerr<<"Error!\n";
-//         abort();
-//         return false;
-//     } else if(i < num.size()-1){
-//         num[i] = false;
-//         num[i+1] = true;
-
-//         last_index = i + 1;
-//     } else{
-//         num[i] = false;
-
-//         last_index = find_last_one(num);
-//     }
-//     return true;
-// }
 
 bool push_one(bvec& num, int i){
     if(i==-1){
@@ -172,15 +133,6 @@ int find_last_one(const bvec& num, unsigned level){
     return i;
 }
 
-// bool is_max(const bvec& num){
-//     auto size = num.size();
-//     if(!num[size-1]) return false;
-//     for(size=size-1;size>1;--size){
-//         if(num[size-1]) return false;
-//     }
-//     return true;
-// }
-
 unsigned tell_score(const uvec& n_pizzas, const bvec& num){
     unsigned total = 0;
 
@@ -191,83 +143,7 @@ unsigned tell_score(const uvec& n_pizzas, const bvec& num){
     return total;
 }
 
-// ================ Algos ===============
-
-// void algo1(const Input& input, Output& output){
-//     bvec num(input.n_types);
-//     bvec fnum;
-//     for(unsigned i=0;i<input.n_types;++i){
-//         num[i] = false;
-//         // cout<<" "<<num[i];
-//     }   fnum = num;
-
-//     unsigned score = 0, max_score = input.max_slices;
-//     bool push = true, add = false;
-//     unsigned curr_score = 0;
-//     saved_time = std::chrono::high_resolution_clock::now();
-
-//     while(/*!is_max(num) &&*/ 1){
-//         // cout<<" >>>>>============\n";
-//         if(push){
-//             // cout<<"pushing...\n";
-//             if(push_one(num)){
-//                 // cout<<" |> succ "<<input.n_pizzas[last_index]<<"\n";
-//                 // curr_score += n_pizzas[last_index];
-//             } else{
-//                 // cout<<" |> fail\n";
-//                 pop_one(num);
-//                 push = false;
-//                 add = true;
-
-//                 // curr_score -= n_pizzas[last_index];
-//             }
-//         }
-//         if(add){
-//             // cout<<"adding...\n";
-//             if(add_one(num)){
-//                 // cout<<" |> succ "<<input.n_pizzas[last_index]<<"\n";
-//                 push=true;
-//                 add=false;
-
-//                 // curr_score += n_pizzas[last_index]-n_pizzas[last_index-1];
-//             } else{
-//                 // cout<<" |> fail\n";
-//             }
-//         }
-
-//         curr_score = tell_score(input.n_pizzas, num);
-//         // cout<<"current score: "<<curr_score<<'\n';
-//         // usleep(1000000);
-
-//         if(curr_score > max_score){
-//             // cout<<"Time to pop!\n";
-//             pop_one(num);
-
-//             // curr_score -= n_pizzas[last_index];
-
-//             push = false;
-//             add = true;
-//         }
-//         else if(score < curr_score){
-//             // cout<<"We're doing it!\n";
-//             score = curr_score;
-//             fnum = num;
-
-//             if(score >= 1000000000 || score == max_score){
-//                 break;
-//             }
-//         }
-//         info.score = score;
-//         info.curr_score = curr_score;
-//         showInfo(5.0f);
-//         // cout<<" ============<<<<<\n";
-//         // usleep(1000000);
-//     }
-//     output.score = score;
-//     for(unsigned i=0;i<input.n_types;++i){
-//         if(fnum[i]) output.order.push_back(i);
-//     }
-// }
+// ================ Algo ===============
 
 void algo2(const Input& input, Output& output){
     bvec num(input.n_types);
@@ -293,7 +169,6 @@ void algo2(const Input& input, Output& output){
         pass = false;
         curr_score = tell_score(input.n_pizzas, num);
         diff = max_score - curr_score;
-
         // cout<<"Diff: "<<diff<<'\n';
 
         for(unsigned i=0;i<input.n_types-1;++i){
@@ -302,7 +177,6 @@ void algo2(const Input& input, Output& output){
                 unsigned curr_diff = 0;
 
                 // std::cout<<"T-F pair found @ "<<i<<", "<<i+1<<'\n';
-
                 DIFF_SEARCH:
                 swap1_index = i+1+tmp_ind;
                 if(swap1_index>=input.n_types) continue;
@@ -310,14 +184,17 @@ void algo2(const Input& input, Output& output){
                     curr_diff = input.n_pizzas[swap1_index]-input.n_pizzas[j-1-tmp_ind];
                     // cout<<"\tcurr diff: "<<curr_diff<<'\n';
                     if(!pass && curr_diff>diff){
-                        if((++tmp_ind)+1+i<input.n_types && !num[tmp_ind+1+i]){
-                            goto DIFF_SEARCH;
-                        }   break;
+                        break;
                     }
                     else if(0<=curr_diff && curr_diff<=diff){
                         swap2_index = j-1-tmp_ind;
                     }
                     pass = true;
+                    if(j==tmp_ind+1 && curr_diff<diff){
+                        for(;i+2+tmp_ind<input.n_types && num[i+2+tmp_ind];++tmp_ind);
+                        if(i+1+tmp_ind == input.n_types) break;
+                        goto DIFF_SEARCH;
+                    }
                 }
                 if(pass){
                     // cout<<"> swapping indices "<<swap1_index<<" and "<<swap2_index<<'\n';
@@ -326,9 +203,6 @@ void algo2(const Input& input, Output& output){
                 }   break;
             }
         }
-        // for(const auto& n: num){
-        //     cout<<' '<<n;
-        // }   cout<<"\n============<<<<<\n\n";
     }
     output.score = tell_score(input.n_pizzas, num);
     for(unsigned i=0;i<input.n_types;++i){
