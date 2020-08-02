@@ -192,7 +192,8 @@ void algo2(const Input& input, Output& output){
                     }
                     pass = true;
                     if(j==tmp_ind+1 && curr_diff<diff){
-                        for(;i+2+tmp_ind<input.n_types && num[i+2+tmp_ind];++tmp_ind);
+                        ++tmp_ind;
+                        for(;i+1+tmp_ind<input.n_types && num[i+1+tmp_ind];++tmp_ind);
                         if(i+1+tmp_ind == input.n_types) break;
                         goto DIFF_SEARCH;
                     }
