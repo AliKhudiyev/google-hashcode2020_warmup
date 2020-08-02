@@ -186,6 +186,7 @@ void algo2(const Input& input, Output& output){
                     if(!pass && curr_diff>diff){
                         break;
                     }
+                    if(!num[j-1-tmp_ind]) continue;
                     else if(0<=curr_diff && curr_diff<=diff){
                         swap2_index = j-1-tmp_ind;
                     }

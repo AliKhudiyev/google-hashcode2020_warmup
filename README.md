@@ -53,5 +53,5 @@ After downloading the project from [here](#) open up a terminal from the project
 |a_example   | 16        | 0.3 ms | 0          |
 |b_small     | 98        | 0.32 ms| 2          |
 |c_medium    | 4496      | 0.35 ms| 4          |
-|d_big       | 999999989 | 2.3 ms | < 12       |
-|e_quite_big | 504999988 | 6.7 ms | < 11       |
+|d_big       | 999999989 | 2.3 ms | < 11       |
+|e_quite_big | 504999988 | 6.7 ms | < 12       |
