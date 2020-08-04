@@ -202,7 +202,8 @@ void algo2(const Input& input, Output& output){
                     // cout<<"> swapping indices "<<swap1_index<<" and "<<swap2_index<<'\n';
                     num[swap1_index] = true;
                     num[swap2_index] = false;
-                }   break;
+                    break;
+                }
             }
         }
     }
